@@ -1,0 +1,52 @@
+package com.example.ageapplication;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+
+public class MainActivity extends AppCompatActivity {
+
+    TextView tv1;
+    Button b1;
+    EditText txtDate;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        tv1 = findViewById(R.id.textView);
+        b1 = findViewById(R.id.button);
+        txtDate = findViewById(R.id.editTextText);
+
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String dobString = txtDate.getText().toString();
+
+                try {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                    LocalDate dob = LocalDate.parse(dobString, formatter);
+                    LocalDate today = LocalDate.now();
+                    Period age = Period.between(dob, today);
+
+                    tv1.setText("Year: " + age.getYears() +
+                            "\nMonth: " + age.getMonths() +
+                            "\nDays: " + age.getDays());
+
+                } catch (Exception e) {
+                    tv1.setText("Invalid date! Use dd/MM/yyyy");
+                }
+            }
+        });
+    }
+}
